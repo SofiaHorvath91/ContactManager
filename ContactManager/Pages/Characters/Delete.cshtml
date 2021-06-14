@@ -1,0 +1,64 @@
+@page
+@model ContactManager.Pages.Characters.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this character?</h3>
+<div>
+    <h4>Character</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.RealName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Character.RealName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.Alias)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Character.Alias)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.Introduction)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Character.Introduction)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.Moral)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Character.Moral)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.Kind)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Character.Kind)
+        </dd>
+        @if ((await AuthorizationService.AuthorizeAsync(
+              User, Model.Character, ModelsOperations.Update)).Succeeded)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Character.Status)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Character.Status)
+            </dd>
+        }
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Character.CharacterID" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <div class="pt-1">
+            <a class="btn btn-xs btn-dark" asp-page="/Characters/Details" asp-route-id="@Model.Character.CharacterID">Back to Character</a>
+        </div>
+    </form>
+</div>

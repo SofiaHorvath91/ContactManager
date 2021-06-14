@@ -1,0 +1,173 @@
+@page
+@model ContactManager.Pages.Universes.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h1>@Model.Universe.Name</h1>
+    <div class="pt-1">
+        <a class="btn btn-xs btn-dark" asp-page="/Characters/Create">New Character</a>
+        <a class="btn btn-xs btn-dark" asp-page="/Teams/Create">New Team</a>
+    </div>
+    <div class="pt-1">
+        @if (Model.IsFavourite == true)
+        {
+            <a class="btn btn-xs btn-outline-dark" asp-page="/Favourites/Delete"
+               asp-route-idtype="@Model.FavID.ToString()_@Model.Universe.UniverseID.ToString()_Universe">Remove from favourites</a>
+        }
+        else
+        {
+            <a class="btn btn-xs btn-outline-dark" asp-page="/Favourites/Create"
+               asp-route-idtype="@Model.Universe.UniverseID.ToString()_Universe">Add to favourites</a>
+        }
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3">
+            <img class="details-profilepic universe-profilepic" src="data:image;base64,@System.Convert.ToBase64String(Model.Universe.ProfileImage)" />
+        </div>
+    </div>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Universe.Name)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Universe.Name)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Universe.Creator)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Universe.Creator)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Universe.Origin)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Universe.Origin)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Universe.Genre)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Universe.Genre)
+        </dd>
+        <dt class="col-sm-3">
+            Number of Teams
+        </dt>
+        <dd class="col-sm-9">
+            @Model.TotalTeamsCount
+        </dd>
+        <dt class="col-sm-3">
+            Number of Characters
+        </dt>
+        <dd class="col-sm-9">
+            @Model.TotalCharactersCount
+        </dd>
+        @if ((await AuthorizationService.AuthorizeAsync(
+User, Model.Universe, ModelsOperations.Update)).Succeeded)
+        {
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Universe.Status)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Universe.Status)
+            </dd>
+        }
+        @if (Model.Universe.UniverseEntries.Count > 0)
+        {
+            <dt class="col-sm-3">
+                Teams
+            </dt>
+            <dd class="col-sm-9">
+                @foreach (var item in Model.Universe.UniverseEntries)
+                {
+                    @if (item.NewMember == NewMember.Team)
+                    {
+                        @if (item.Team.ProfileImage == null || item.Team.ProfileImage.Length == 0)
+                        {
+                            <img class="index-profilepic" src="/img/profilepic.png" />
+                        }
+                        else
+                        {
+                            <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.Team.ProfileImage)" />
+                        }
+                        <a asp-page="/Teams/Details" asp-route-id="@item.Team.TeamID">
+                            @Html.DisplayFor(modelItem => item.Team.TeamName)
+                        </a>
+                        <br /><br />
+                    }
+                }
+            </dd>
+            <dt class="col-sm-3">
+                Standalone Characters
+            </dt>
+            <dd class="col-sm-9">
+                @foreach (var item in Model.Universe.UniverseEntries)
+                {
+                    @if (item.NewMember == NewMember.Character)
+                    {
+                        @if (item.Character.ProfileImage == null || item.Character.ProfileImage.Length == 0)
+                        {
+                            <img class="index-profilepic" src="/img/profilepic.png" />
+                        }
+                        else
+                        {
+                            <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.Character.ProfileImage)" />
+                        }
+                        <a asp-page="/Characters/Details" asp-route-id="@item.Character.CharacterID">
+                            @Html.DisplayFor(modelItem => item.Character.RealName) / @Html.DisplayFor(modelItem => item.Character.Alias)
+                        </a>
+                        <br /><br />
+                    }
+                }
+            </dd>
+        }
+    </dl>
+</div>
+@if (Model.Universe.Status != UniverseStatus.Approved)
+{
+    @if ((await AuthorizationService.AuthorizeAsync(
+    User, Model.Universe, ModelsOperations.Approve)).Succeeded)
+    {
+        <form style="display:inline;" method="post">
+            <input type="hidden" name="id" value="@Model.Universe.UniverseID" />
+            <input type="hidden" name="status" value="@UniverseStatus.Approved" />
+            <button type="submit" class="btn btn-xs btn-success">Approve</button>
+        </form>
+    }
+}
+
+@if (Model.Universe.Status != UniverseStatus.Rejected)
+{
+    @if ((await AuthorizationService.AuthorizeAsync(
+    User, Model.Universe, ModelsOperations.Reject)).Succeeded)
+    {
+        <form style="display:inline;" method="post">
+            <input type="hidden" name="id" value="@Model.Universe.UniverseID" />
+            <input type="hidden" name="status" value="@UniverseStatus.Rejected" />
+            <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+        </form>
+    }
+}
+
+<div class="pt-1">
+    @if ((await AuthorizationService.AuthorizeAsync(
+     User, Model.Universe,
+     ModelsOperations.Update)).Succeeded)
+    {
+        <a class="btn btn-xs btn-dark" asp-page="./Edit" asp-route-id="@Model.Universe.UniverseID">Edit</a>
+    }
+
+    @if ((await AuthorizationService.AuthorizeAsync(
+     User, Model.Universe,
+     ModelsOperations.Delete)).Succeeded)
+    {
+        <a class="btn btn-xs btn-danger" asp-page="./Delete" asp-route-id="@Model.Universe.UniverseID">Delete</a>
+    }
+</div>
+<div class="pt-1">
+    <a class="btn btn-xs btn-dark" asp-page="./Index">Back to List</a>
+</div>

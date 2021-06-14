@@ -1,0 +1,17 @@
+﻿@page
+@model ContactManager.Pages.Words.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete word "@Model.Word.WordString"?</h3>
+<div>
+    <form method="post">
+        <input type="hidden" asp-for="Word.WordID" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a class="btn btn-xs btn-dark" asp-page="/YourWorld">Back to Your World</a>
+    </form>
+</div>

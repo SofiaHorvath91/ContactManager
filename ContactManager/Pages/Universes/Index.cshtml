@@ -1,0 +1,100 @@
+@page
+@model ContactManager.Pages.Universes.IndexModel
+
+@{
+    ViewData["Title"] = "Fandoms";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Fandoms</h1>
+</div>
+<hr />
+<div class="text-center pt-2 pb-3">
+    <a class="btn btn-xs btn-dark" asp-page="/Universes/Create">New Fandom</a>
+</div>
+<div class="text-center pt-2 pb-3">
+    <form asp-page="./Index" method="get">
+        <div class="text-center pt-2 pb-3">
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" placeholder="Find by name..." />
+        </div>
+        <input type="submit" value="Search" class="btn btn-xs btn-outline-dark" />
+        <a class="btn btn-xs btn-outline-dark" asp-page="./Index">Back to full List</a>
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Universe[0].Name)
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.OriginSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Universe[0].Origin)
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.GenreSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Universe[0].Genre)
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Universe)
+        {
+            <tr>
+                @if(item.ProfileImage == null || item.ProfileImage.Length == 0)
+                {
+                    <td>
+                        <img class="index-profilepic" src="./img/profilepic.png" />
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.ProfileImage)" />
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Origin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genre)
+                </td>
+                <td>
+                    <a class="btn btn-xs btn-dark my-1" asp-page="./Details" asp-route-id="@item.UniverseID">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.Universe.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Universe.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Universe.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-dark @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Universe.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-dark @nextDisabled">
+    Next
+</a>

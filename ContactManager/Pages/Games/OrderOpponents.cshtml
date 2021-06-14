@@ -1,0 +1,30 @@
+﻿@page
+@model ContactManager.Pages.Games.OrderOpponentsModel
+@{
+    ViewData["Title"] = "Order Opponents";
+}
+
+<h1>10 Most Powerful Superheroes</h1>
+
+<p>Drag and drop the items into their corresponding spots</p>
+<div class="image-container">
+    <ul class="draggable-list sideOne" id="draggable-list-sideOne"></ul>
+    <ul class="draggable-list sideTwo" id="draggable-list-sideTwo"></ul>
+</div>
+<button class="check-btn" id="check">
+    Check Order
+    <i class="fas fa-paper-plane"></i>
+</button>
+
+<input type="hidden" id="opponents-sideOne" value="@Model.OpponentsSideOne" />
+<input type="hidden" id="opponents-sideTwo" value="@Model.OpponentsSideTwo" />
+
+<div class="popup-container" id="popup-container-opps">
+    <div class="popup">
+        <h2 id="final-message-opps"></h2>
+        <button id="play-button-opps">Play Again</button>
+        <button id="exit-button-opps">Back</button>
+    </div>
+</div>
+
+<script src="~/js/opponents.js"></script>

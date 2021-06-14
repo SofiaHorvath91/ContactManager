@@ -1,0 +1,27 @@
+﻿@page
+@model ContactManager.Pages.Favourites.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+    string type = Model.FavType.ToString();
+    string plural = type + "s";
+}
+
+<h1>Remove from Favourites</h1>
+<hr />
+<div>
+    <div class="row">
+        <div class="col-md-4">
+            <p class="main-text">Do you wish to remove this @type.ToLower() from your favourites?</p>
+        </div>
+    </div>
+    
+    <form method="post">
+        <input type="hidden" name="favid" value="@Model.FavID" />
+        <input type="hidden" name="favtype" value="@Model.FavType" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <div class="pt-1">
+            <a class="btn btn-xs btn-dark" asp-page="/@plural/Details" asp-route-id="@Model.FavID">Back</a>
+        </div>
+    </form>
+</div>

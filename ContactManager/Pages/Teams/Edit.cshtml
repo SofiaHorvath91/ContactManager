@@ -1,0 +1,89 @@
+@page
+@model ContactManager.Pages.Teams.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Team</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form enctype="multipart/form-data" method="post">
+            <dl>
+                <dt>
+                    <label>Profile Image (Image size max. 50MB!)</label>
+                </dt>
+                <dd>
+                    <input asp-for="FileUpload" type="file">
+                </dd>
+            </dl>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Team.TeamID" />
+            <div class="form-group">
+                <label asp-for="Team.TeamName" class="control-label"></label>
+                <input asp-for="Team.TeamName" class="form-control" />
+                <span asp-validation-for="Team.TeamName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Team.TeamMotto" class="control-label"></label>
+                <input asp-for="Team.TeamMotto" class="form-control" />
+                <span asp-validation-for="Team.TeamMotto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Team.Introduction" class="control-label"></label>
+                <textarea asp-for="Team.Introduction" class="form-control" rows="10" cols="30"></textarea>
+                <span asp-validation-for="Team.Introduction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Team.Side" class="control-label"></label>
+                <select asp-for="Team.Side" class="form-control" asp-items="Html.GetEnumSelectList<Side>()">
+                    <option value="">-- Select Side --</option>
+                </select>
+                <span asp-validation-for="Team.Side" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Universe</label>
+                <div class="col-md-offset-2 col-md-10">
+                    <table>
+                        <tr>
+                            @{
+                                List<ExistingUniversesData> universes = Model.ExistingUniversesList;
+                                foreach (var universe in universes)
+                                {
+
+                                @:</tr><tr>
+                                    @:<td>
+                                        <input type="checkbox"
+                                               id="@universe.UniverseName _checkBox"
+                                               name="selectedUniverses"
+                                               class="selectedTeamUniversesCB"
+                                               value="@universe.UniverseID"
+                                               @(Html.Raw(universe.Existing ? "checked=\"checked\"" : "")) />
+                                        @universe.UniverseName
+                                    @:</td>
+                                }
+                            @:</tr>
+                            }
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <a class="btn btn-xs btn-dark" asp-page="/Teams/Details" asp-route-id="@Model.Team.TeamID">Back to Team</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

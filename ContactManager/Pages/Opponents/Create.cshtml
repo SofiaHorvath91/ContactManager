@@ -1,0 +1,87 @@
+﻿@page
+@model ContactManager.Pages.Opponents.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>OpponentEntry</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <h4>Fandom</h4>
+            <div class="form-group" id="">
+                <select class="form-control" name="selectedUniverse" asp-items="ViewBag.Universes">
+                    <option value="">-- Select Universe --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Select Universe" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (Model.UniverseSelected == true)
+{
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <h4>Side 1</h4>
+            <input type="checkbox" value="Character" id="opp1-character_label" class="opponents-side1"/> Character
+            <div class="form-group opponents-divs hidden" id="opp1-character_div">
+                <select asp-for="OpponentEntry.CharacterID" class="form-control" asp-items="ViewBag.CharacterID">
+                    <option value="">-- Select Character --</option>
+                </select>
+            </div>
+            <br />
+            <input type="checkbox" value="Team" id="opp1-team_label" class="opponents-side1"/> Team
+            <div class="form-group opponents-divs hidden" id="opp1-team_div">
+                <select asp-for="OpponentEntry.TeamID" class="form-control" asp-items="ViewBag.TeamID">
+                    <option value="">-- Select Team --</option>
+                </select>
+            </div>
+            <br />
+            <input type="checkbox" value="Other" id="opp1-other_label" class="opponents-side1"/> Other
+            <div class="form-group opponents-divs hidden" id="opp1-other_div">
+                <input asp-for="OpponentEntry.Item" class="form-control" />
+            </div>
+            <h4>Side 2</h4>
+            <input type="checkbox" value="Character" id="opp2-character_label" class="opponents-side2"/> Character
+            <div class="form-group opponents-divs hidden" id="opp2-character_div">
+                <select asp-for="OpponentEntry.OpponentCharacterID" class="form-control" asp-items="ViewBag.CharacterID">
+                    <option value="">-- Select Opponent Character --</option>
+                </select>
+            </div>
+            <br />
+            <input type="checkbox" value="Team" id="opp2-team_label" class="opponents-side2"/> Team
+            <div class="form-group opponents-divs hidden" id="opp2-team_div">
+                <select asp-for="OpponentEntry.OpponentTeamID" class="form-control" asp-items="ViewBag.TeamID">
+                    <option value="">-- Select Opponent Team --</option>
+                </select>
+            </div>
+            <br />
+            <input type="checkbox" value="Other" id="opp2-other_label" class="opponents-side2"/> Other
+            <div class="form-group opponents-divs hidden" id="opp2-other_div">
+                <input asp-for="OpponentEntry.OpponentItem" class="form-control" />
+            </div>
+            <input type="hidden" value="@Model.Universe.UniverseID" name="chosenUniverse"/>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+}
+<div class="row">
+    <div class="col-md-4">
+        <a class="btn btn-xs btn-dark" asp-page="/Games/Index">Back to Games</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

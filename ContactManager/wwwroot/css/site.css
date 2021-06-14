@@ -1,0 +1,253 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+@import url('hangman.css');
+@import url('opponents.css');
+
+.table td {
+    vertical-align:middle !important;
+    text-align: center !important;
+    align-items:center !important;
+}
+
+.table th {
+    vertical-align: middle !important;
+    text-align: center !important;
+    align-items: center !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.block{
+    display:block !important;
+}
+
+.row, dt{
+    margin:0px !important;
+    padding:0px !important;
+}
+
+#custom-background {
+    background-image: url('../img/fandom-background.png');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+}
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+/* Format profile pictures in Details/Index */
+
+.details-profilepic{
+    width:200px;
+    height:200px;
+    border-radius : 50%;
+    object-fit: cover;
+    margin : 0px 0px 10px 0px;
+}
+
+.index-profilepic {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 10px 20px 10px 20px;
+}
+
+/* Home page */
+
+.image-container {
+    margin: auto !important;
+    display: flex;
+    width: auto;
+    padding: 10px 0px 10px 0px;
+    align-items: center !important;
+}
+
+.main-image {
+    height: 100%;
+    object-fit: cover;
+}
+
+#home-main-image {
+    width: 380px;
+    padding : 30px 0 30px 0;
+}
+
+.main-text{
+    font-size: 20px;
+}
+
+/* About page */
+.about-numbers {
+    font-size: 20px;
+    font-weight:bold;
+    text-align: center;
+    margin: 20px 0px 10px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: 0.5s;
+    cursor: default;
+    padding-top:80px;
+}
+
+.number-p{
+    font-size:40px;
+    line-height:0 !important;
+}
+
+#about-fandoms-div {
+    background-image: url("../img/about-bg-fandoms.jpg");
+}
+
+#about-teams-div {
+    background-image: url("../img/about-bg-teams.jpg");
+}
+
+#about-characters-div {
+    background-image: url("../img/about-bg-characters.png");
+}
+
+.main-text-long{
+    font-size:18px;
+}
+
+.about-numbers:hover {
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
+}
+
+/* Games page */
+.games{
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.game-image {
+    float:left;
+}
+
+.game-form {
+    float: right;
+    margin:20px 0px 0px 20px;
+}
+
+.games-label{
+    margin:50px 0px 30px 0px;
+}
+
+/* Your World page*/
+.collapsible{
+    cursor:pointer;
+}
+
+.active, .collapsible:hover {
+    color: #777;
+}
+
+.your-world-content {
+    display: none;
+}
+
+#yourworld-main-image {
+    width: 200px;
+    padding: 5px 0 5px 0;
+}
+
+/* Custom resize */
+@media screen and (max-width: 920px) {
+    .big-fav-icon {
+        width: 120px;
+        height: 120px;
+    }
+    .number-p {
+        font-size: 20px;
+        line-height: 0 !important;
+    }
+    .about-numbers {
+        padding-top: 50px;
+        font-size: 13px;
+        line-height: 0.3 !important;
+    }
+}
+
+@media all and (min-width:320px) and (max-width:768px){
+    .games-pic {
+        width: 90px;
+        height: 90px;
+        margin-top:60px;
+    }
+
+    table{
+        font-size:12px !important;
+    }
+}

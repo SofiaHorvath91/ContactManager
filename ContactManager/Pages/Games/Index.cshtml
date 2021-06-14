@@ -1,0 +1,80 @@
+﻿@page
+@model ContactManager.Pages.Games.IndexModel
+@{
+    ViewData["Title"] = "Games";
+}
+
+<div class="text-center">
+    <h1 class="display-4">The game is on!</h1>
+</div>
+<hr />
+<table>
+    <thead>
+        <tr>
+            <th>
+                <h3 class="control-label games-label">HANGMAN GAME</h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>
+                <div class="games">
+                    <div class="game-image">
+                        <img class="details-profilepic games-pic" src="~/img/hangman.jpg" />
+                    </div>
+                    <div class="game-form">
+                        <form method="post">
+                            <div class="form-group">
+                                <p class="main-text-long">Choose Fandom Theme</p>
+                                <select name="fandomName" class="form-control" asp-items="@Model.FandomsWithWords">
+                                    <option value="">-- Select Fandom --</option>
+                                </select>
+                                <input type="hidden" name="gameType" value="HangmanGame" />
+                                <input type="hidden" name="universeNeeded" value="yes" />
+                            </div>
+                            <input class="btn btn-lg btn-dark" type="submit" value="Play Hangman Game" />
+                        </form>
+                        <br />
+                        <a class="btn btn-lg btn-outline-dark" asp-page="/Words/Create">Add Word</a>
+                    </div>
+                </div>
+            </th>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            <th>
+                <h3 class="control-label games-label">ORDER OPPONENTS</h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>
+                <div class="games">
+                    <div class="game-image">
+                        <img class="details-profilepic  games-pic" src="~/img/opponents.jpg" />
+                    </div>
+                    <div class="game-form">
+                        <form method="post">
+                            <div class="form-group">
+                                <p class="main-text-long">Choose Fandom Theme</p>
+                                <select name="fandomName" class="form-control" asp-items="@Model.FandomsWithOpponents">
+                                    <option value="">-- Select Fandom --</option>
+                                </select>
+                                <input type="hidden" name="gameType" value="OrderOpponents" />
+                                <input type="hidden" name="universeNeeded" value="yes" />
+                            </div>
+                            <input class="btn btn-lg btn-dark" type="submit" value="Start Opponent Order" />
+                        </form>
+                        <br />
+                        <a class="btn btn-lg btn-outline-dark" asp-page="/Opponents/Create">Add Opponent Pair</a>
+                    </div>
+                </div>
+            </th>
+        </tr>
+    </tbody>
+</table>

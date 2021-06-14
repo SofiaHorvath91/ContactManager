@@ -1,0 +1,358 @@
+﻿@page
+@model ContactManager.Pages.AdminModel
+@{
+    ViewData["Title"] = "Admin";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Admin Site</h1>
+</div>
+<hr />
+<div class="text-center collapsible">
+    <h3>SUBMITTED CHARACTERS</h3>
+</div>
+<div class="row your-world-content" id="submitted-characters_table">
+    @if (Model.SubmittedCharacters.Count == 0)
+    {
+        <p class="text-center main-text">There are no characters for revision actually</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Character</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SubmittedCharacters)
+                {
+                    <tr>
+                        <td>
+                            <a asp-page="/Characters/Details" asp-route-id=@item.CharacterID>@item.RealName / @item.Alias</a>
+                        </td>
+                        <td>
+                            @if (item.Status != CharacterStatus.Approved)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                        User, item, ModelsOperations.Approve)).Succeeded)
+                                {
+                                    <form style="display:inline;" method="post">
+                                        <input type="hidden" name="id" value="@item.CharacterID" />
+                                        <input type="hidden" name="status" value="Character_Approved" />
+                                        <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                                    </form>
+                                }
+                            }
+
+                            @if (item.Status != CharacterStatus.Rejected)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                        User, item, ModelsOperations.Reject)).Succeeded)
+                                {
+                                    <form style="display:inline;" method="post">
+                                        <input type="hidden" name="id" value="@item.CharacterID" />
+                                        <input type="hidden" name="status" value="Character_Rejected" />
+                                        <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+                                    </form>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<hr />
+<div class="text-center collapsible">
+    <h3>SUBMITTED TEAMS</h3>
+</div>
+<div class="row your-world-content" id="submitted-teams_table">
+    @if (Model.SubmittedTeams.Count == 0)
+    {
+        <p class="text-center main-text">There are no teams for revision actually</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Team</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SubmittedTeams)
+                {
+                    <tr>
+                        <td>
+                            <a asp-page="/Teams/Details" asp-route-id=@item.TeamID>@item.TeamName</a>
+                        </td>
+                        <td>
+                            @if (item.Status != TeamStatus.Approved)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                         User, item, ModelsOperations.Approve)).Succeeded)
+                                {
+                                    <form style="display:inline;" method="post">
+                                        <input type="hidden" name="id" value="@item.TeamID" />
+                                        <input type="hidden" name="status" value="Team_Approved" />
+                                        <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                                    </form>
+                                }
+                            }
+
+                            @if (item.Status != TeamStatus.Rejected)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                         User, item, ModelsOperations.Reject)).Succeeded)
+                                {
+                                    <form style="display:inline;" method="post">
+                                        <input type="hidden" name="id" value="@item.TeamID" />
+                                        <input type="hidden" name="status" value="Team_Rejected" />
+                                        <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+                                    </form>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<hr />
+<div class="text-center collapsible">
+    <h3>SUBMITTED FANDOMS</h3>
+</div>
+<div class="row your-world-content" id="submitted-fandoms_table">
+    @if (Model.SubmittedUniverses.Count == 0)
+    {
+        <p class="text-center main-text">There are no universes for revision actually</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Fandom</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SubmittedUniverses)
+                {
+                    <tr>
+                        <td>
+                            <a asp-page="/Universes/Details" asp-route-id=@item.UniverseID>@item.Name</a>
+                        </td>
+                        <td>
+                            @if (item.Status != UniverseStatus.Approved)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                         User, item, ModelsOperations.Approve)).Succeeded)
+                                {
+                                    <form style="display:inline;" method="post">
+                                        <input type="hidden" name="id" value="@item.UniverseID" />
+                                        <input type="hidden" name="status" value="Universe_Approved" />
+                                        <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                                    </form>
+                                }
+                            }
+
+                            @if (item.Status != UniverseStatus.Rejected)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                         User, item, ModelsOperations.Reject)).Succeeded)
+                                {
+                                    <form style="display:inline;" method="post">
+                                        <input type="hidden" name="id" value="@item.UniverseID" />
+                                        <input type="hidden" name="status" value="Universe_Rejected" />
+                                        <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+                                    </form>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<hr />
+<div class="text-center collapsible">
+    <h3>SUBMITTED POWERS</h3>
+</div>
+<div class="row your-world-content" id="submitted-powers_table">
+    @if (Model.SubmittedPowers.Count == 0)
+    {
+        <p class="text-center main-text">There are no powers for revision actually</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Power</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SubmittedPowers)
+                {
+                    <tr>
+                        <td>
+                            @item.PowerName
+                        </td>
+                        <td>
+                            @item.PowerDescription
+                        </td>
+                        <td>
+                            @if (item.Status != PowerStatus.Approved)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                         User, item, ModelsOperations.Approve)).Succeeded)
+                                {
+                                    <form style="display:inline;" method="post">
+                                        <input type="hidden" name="id" value="@item.PowerID" />
+                                        <input type="hidden" name="status" value="Power_Approved" />
+                                        <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                                    </form>
+                                }
+                            }
+
+                            @if (item.Status != PowerStatus.Rejected)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                         User, item, ModelsOperations.Reject)).Succeeded)
+                                {
+                                    <form style="display:inline;" method="post">
+                                        <input type="hidden" name="id" value="@item.PowerID" />
+                                        <input type="hidden" name="status" value="Power_Rejected" />
+                                        <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+                                    </form>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<hr />
+<div class="text-center collapsible">
+    <h3>SUBMITTED WORDS</h3>
+</div>
+<div class="row your-world-content" id="submitted-words_table">
+    @if (Model.SubmittedWords.Count == 0)
+    {
+        <p class="text-center main-text">There are no words for revision actually</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Word</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SubmittedWords)
+                {
+                    <tr>
+                        <td>
+                            @item.WordString
+                        </td>
+                        <td>
+                            @if (item.Status != WordStatus.Approved)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                         User, item, ModelsOperations.Approve)).Succeeded)
+                                {
+                                    <form style="display:inline;" method="post">
+                                        <input type="hidden" name="id" value="@item.WordID" />
+                                        <input type="hidden" name="status" value="Word_Approved" />
+                                        <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                                    </form>
+                                }
+                            }
+
+                            @if (item.Status != WordStatus.Rejected)
+                            {
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                         User, item, ModelsOperations.Reject)).Succeeded)
+                                {
+                                    <form style="display:inline;" method="post">
+                                        <input type="hidden" name="id" value="@item.WordID" />
+                                        <input type="hidden" name="status" value="Word_Rejected" />
+                                        <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+                                    </form>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<hr />
+<div class="text-center collapsible">
+    <h3>SUBMITTED PAIRS</h3>
+</div>
+<div class="row your-world-content" id="submitted-pairs_table">
+    @if (Model.SubmittedOpponents.Count == 0)
+    {
+        <p class="text-center main-text">There are no pairs for revision actually</p>
+    }
+    else
+    {
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Pair</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SubmittedOpponents)
+                {
+                    var oppEntry = Model.SubmittedOpponentEntries.Single(x => x.OpponentEntryID == Convert.ToInt32(item.Split("_")[2]));
+                    <tr>
+                        <td>
+                            @item.Split("_")[0] vs. @item.Split("_")[1]
+                        </td>
+                        <td>
+                            @if ((await AuthorizationService.AuthorizeAsync(
+                           User, oppEntry, ModelsOperations.Approve)).Succeeded)
+                            {
+                                <form style="display:inline;" method="post">
+                                    <input type="hidden" name="id" value=@oppEntry.OpponentEntryID />
+                                    <input type="hidden" name="status" value="Pair_Approved" />
+                                    <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                                </form>
+                            }
+
+                            @if ((await AuthorizationService.AuthorizeAsync(
+                           User, oppEntry, ModelsOperations.Reject)).Succeeded)
+                            {
+                                <form style="display:inline;" method="post">
+                                    <input type="hidden" name="id" value=@oppEntry.OpponentEntryID />
+                                    <input type="hidden" name="status" value="Pair_Rejected" />
+                                    <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<hr />

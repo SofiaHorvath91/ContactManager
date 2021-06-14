@@ -1,0 +1,248 @@
+﻿@page
+@model ContactManager.Pages.YourWorldModel
+@{
+    ViewData["Title"] = "Your World";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Your World</h1>
+</div>
+<div class="row">
+    <div class="image-container">
+        <img class="main-image" id="yourworld-main-image" src="img/storiesforever.png">
+    </div>
+</div>
+<hr />
+<div class="text-center collapsible">
+    <h3>YOUR FANDOMS</h3>
+</div>
+<div class="row your-world-content" id="your-fandoms_icons">
+    <div class="row image-container">
+        @if (Model.UserUniverses.Count == 0)
+        {
+            <p class="main-text">You haven't created any fandoms yet</p>
+        }
+        else
+        {
+            @foreach (var item in Model.UserUniverses)
+            {
+                <a asp-page="/Universes/Details" asp-route-id="@item.UniverseID">
+                    @if(item.ProfileImage == null || item.ProfileImage.Length == 0)
+                    {
+                        <img class="index-profilepic" src="~/img/profilepic.png">
+
+                    }
+                    else
+                    {
+                        <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.ProfileImage)">
+                    }
+                </a>
+            }
+        }
+    </div>
+</div>
+<hr />
+<div class="text-center collapsible">
+    <h3>YOUR TEAMS</h3>
+</div>
+<div class="row your-world-content" id="your-teams_icons">
+    <div class="row image-container">
+        @if (Model.UserTeams.Count == 0)
+        {
+            <p class="main-text">You haven't created any teams yet</p>
+        }
+        else
+        {
+            @foreach (var item in Model.UserTeams)
+            {
+                <a asp-page="/Teams/Details" asp-route-id="@item.TeamID">
+                    @if(item.ProfileImage == null || item.ProfileImage.Length == 0)
+                    {
+                        <img class="index-profilepic" src="~/img/profilepic.png">
+                    }
+                    else
+                    {
+                        <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.ProfileImage)">
+                    }
+                </a>
+            }
+        }
+    </div>
+</div>
+<hr />
+<div class="text-center collapsible">
+    <h3>YOUR CHARACTERS</h3>
+</div>
+<div class="row your-world-content" id="your-characters_icons">
+    <div class="row image-container">
+        @if (Model.UserCharacters.Count == 0)
+        {
+            <p class="main-text">You haven't created any characters yet</p>
+        }
+        else
+        {
+            @foreach (var item in Model.UserCharacters)
+            {
+                <a asp-page="/Characters/Details" asp-route-id="@item.CharacterID">
+                    @if(item.ProfileImage == null || item.ProfileImage.Length == 0)
+                    {
+                        <img class="index-profilepic" src="~/img/profilepic.png">
+
+                    }
+                    else
+                    {
+                        <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.ProfileImage)">
+                    }
+                </a>
+            }
+        }
+    </div>
+</div>
+<hr />
+<div class="text-center collapsible">
+    <h3>YOUR POWERS</h3>
+</div>
+@if (Model.UserPowers.Count == 0)
+{
+    <div class="row your-world-content">
+        <div class="row image-container">
+            <p class="main-text">You haven't created any powers yet</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row your-world-content" id="your-powers_table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Power</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Type</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.UserPowers)
+                {
+                    <tr>
+                        <td>
+                            @item.PowerName
+                        </td>
+                        <td>
+                            @item.PowerDescription
+                        </td>
+                        <td>
+                            @item.Status
+                        </td>
+                        @if ((await AuthorizationService.AuthorizeAsync(
+                      User, item, ModelsOperations.Delete)).Succeeded)
+                        {
+                            <td>
+                                <a class="btn btn-xs btn-dark my-1" asp-page="/Powers/Delete" asp-route-id="@item.PowerID">Delete</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<hr />
+<div class="text-center collapsible">
+    <h3>YOUR WORDS (FOR GAMES)</h3>
+</div>
+@if (Model.UserWords.Count == 0)
+{
+    <div class="row your-world-content">
+        <div class="row image-container">
+            <p class="main-text">You haven't created any words for games yet</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row your-world-content" id="your-words_table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Word</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.UserWords)
+                {
+                    <tr>
+                        <td>
+                            @item.WordString
+                        </td>
+                        <td>
+                            @item.Status
+                        </td>
+                        @if ((await AuthorizationService.AuthorizeAsync(
+                      User, item, ModelsOperations.Delete)).Succeeded)
+                        {
+                            <td>
+                                <a class="btn btn-xs btn-dark my-1" asp-page="/Words/Delete" asp-route-id="@item.WordID">Delete</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<hr />
+<div class="text-center collapsible">
+    <h3>YOUR OPPONENT PAIRS (FOR GAMES)</h3>
+</div>
+@if (Model.UserOpponentPairs.Count == 0)
+{
+    <div class="row your-world-content">
+        <div class="row image-container">
+            <p class="main-text">You haven't created any pairs for games yet</p>
+        </div>
+    </div>}
+else
+{
+    <div class="row your-world-content" id="your-pairs_table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Opponent Pair</th>
+                    <th class="text-center">Fandom</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.UserOpponentPairs)
+                {
+                    <tr>
+                        <td>
+                            @item.Split("_")[0] versus @item.Split("_")[1]
+                        </td>
+                        <td>
+                            @item.Split("_")[2]
+                        </td>
+                        <td>
+                            @item.Split("_")[4]
+                        </td>
+                        <td>
+                            <a class="btn btn-xs btn-dark my-1" asp-page="/Opponents/Delete"
+                               asp-route-id=@Convert.ToInt32(@item.Split("_")[3])>Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<hr />
+<div class="text-center">
+    <br />
+    <p class="main-text-long">Your added elements will be visible to all users once the admin approves them.</p>
+</div>

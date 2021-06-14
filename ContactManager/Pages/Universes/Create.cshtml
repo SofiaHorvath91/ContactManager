@@ -1,0 +1,63 @@
+@page
+@model ContactManager.Pages.Universes.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Universe</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form enctype="multipart/form-data" method="post">
+            <dl>
+                <dt>
+                    <label>Profile Image (Image size max. 50MB!)</label>
+                </dt>
+                <dd>
+                    <input asp-for="FileUpload" type="file">
+                </dd>
+            </dl>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Universe.Name" class="control-label"></label>
+                <input asp-for="Universe.Name" class="form-control" />
+                <span asp-validation-for="Universe.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Universe.Creator" class="control-label"></label>
+                <input asp-for="Universe.Creator" class="form-control" />
+                <span asp-validation-for="Universe.Creator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Universe.Origin" class="control-label"></label>
+                <select asp-for="Universe.Origin" class="form-control" asp-items="Html.GetEnumSelectList<Origin>()">
+                    <option value="">-- Select Origin --</option>
+                </select>
+                <span asp-validation-for="Universe.Origin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Universe.Genre" class="control-label"></label>
+                <select asp-for="Universe.Genre" class="form-control" asp-items="Html.GetEnumSelectList<Genre>()">
+                    <option value="">-- Select Genre --</option>
+                </select>
+                <span asp-validation-for="Universe.Genre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <a class="btn btn-xs btn-dark" asp-page="./Index">Back to Fandoms</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

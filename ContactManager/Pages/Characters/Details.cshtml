@@ -1,0 +1,225 @@
+@page
+@model ContactManager.Pages.Characters.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h1>@Model.Character.RealName / @Model.Character.Alias</h1>
+    <div class="pt-1">
+        <a class="btn btn-xs btn-dark" asp-page="/Powers/Create" asp-route-id="@Model.Character.CharacterID">Create New Power</a>
+    </div>
+    <div class="pt-1">
+        @if (Model.IsFavourite == true)
+        {
+            <a class="btn btn-xs btn-outline-dark" asp-page="/Favourites/Delete"
+               asp-route-idtype="@Model.FavID.ToString()_@Model.Character.CharacterID.ToString()_Character">Remove from favourites</a>
+        }
+        else
+        {
+            <a class="btn btn-xs btn-outline-dark" asp-page="/Favourites/Create"
+               asp-route-idtype="@Model.Character.CharacterID.ToString()_Character">Add to favourites</a>
+        }
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-2">
+            <img class="details-profilepic character-profilepic" src="data:image;base64,@System.Convert.ToBase64String(Model.Character.ProfileImage)" />
+        </div>
+    </div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.RealName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Character.RealName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.Alias)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Character.Alias)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.Introduction)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Character.Introduction)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.Moral)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Character.Moral)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.Kind)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Character.Kind)
+        </dd>
+        @if ((await AuthorizationService.AuthorizeAsync(
+  User, Model.Character, ModelsOperations.Update)).Succeeded)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Character.Status)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Character.Status)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Character.UniverseEntries)
+        </dt>
+        @if (Model.Character.UniverseEntries.Count > 0)
+        {
+            <dd class="col-sm-10">
+                @foreach (var item in Model.Character.UniverseEntries)
+                {
+                    @if(item.Universe.ProfileImage == null || item.Universe.ProfileImage.Length == 0)
+                    {
+                        <img class="index-profilepic" src="~/img/profilepic.png" />
+                    }
+                    else
+                    {
+                        <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.Universe.ProfileImage)" />
+                    }
+                    <a asp-page="/Universes/Details" asp-route-id="@item.Universe.UniverseID">
+                        @Html.DisplayFor(modelItem => item.Universe.Name)
+                    </a>
+                    <br />
+                }
+            </dd>
+        }
+        else
+        {
+            @if (Model.Character.TeamEntries.Count > 0)
+            {
+                var universe = Model.Character.TeamEntries.First().Team.UniverseEntries.First().Universe;
+                <dd class="col-sm-10">
+                    @if (universe.ProfileImage == null || universe.ProfileImage.Length == 0)
+                    {
+                         <img class="index-profilepic" src="~/img/profilepic.png" />
+                    }
+                    else 
+                    { 
+                        <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(universe.ProfileImage)" />
+                    }
+                    <a asp-page="/Universes/Details" asp-route-id="@universe.UniverseID">
+                        @Html.DisplayFor(model => model.Character.TeamEntries.First().Team.UniverseEntries.First().Universe.Name)
+                    </a>
+                    <br />
+                </dd>
+            }
+        }
+        @if (Model.Character.TeamEntries.Count > 0)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Character.TeamEntries)
+            </dt>
+            <dd class="col-sm-10">
+                <table class="table">
+                    <tr>
+                        <th></th>
+                        <th>Team</th>
+                        <th>Role</th>
+                    </tr>
+                    @foreach (var item in Model.Character.TeamEntries)
+                    {
+                        <tr>
+                            <td>
+                                @if (item.Team.ProfileImage == null || item.Team.ProfileImage.Length == 0)
+                                {
+                                    <img class="index-profilepic" src="~/img/profilepic.png" />
+                                }
+                                else
+                                {
+                                    <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.Team.ProfileImage)" />
+                                }
+                            </td>
+                            <td>
+                                <a asp-page="/Teams/Details" asp-route-id="@item.Team.TeamID">
+                                    @Html.DisplayFor(modelItem => item.Team.TeamName)
+                                </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Role)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </dd>
+        }
+        @if (Model.Character.CharacterPowerEntries.Count > 0)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Character.CharacterPowerEntries)
+            </dt>
+            <dd class="col-sm-10">
+                <table class="table">
+                    <tr>
+                        <th>Power</th>
+                        <th>Power Level</th>
+                        <th>Specification</th>
+                    </tr>
+                    @foreach (var item in Model.Character.CharacterPowerEntries)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Power.PowerName) (@Html.DisplayFor(modelItem => item.Power.PowerDescription))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Level)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Specification)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </dd>
+        }
+    </dl>
+</div>
+@if (Model.Character.Status != CharacterStatus.Approved)
+{
+    @if ((await AuthorizationService.AuthorizeAsync(
+    User, Model.Character, ModelsOperations.Approve)).Succeeded)
+    {
+        <form style="display:inline;" method="post">
+            <input type="hidden" name="id" value="@Model.Character.CharacterID" />
+            <input type="hidden" name="status" value="@CharacterStatus.Approved" />
+            <button type="submit" class="btn btn-xs btn-success">Approve</button>
+        </form>
+    }
+}
+
+@if (Model.Character.Status != CharacterStatus.Rejected)
+{
+    @if ((await AuthorizationService.AuthorizeAsync(
+    User, Model.Character, ModelsOperations.Reject)).Succeeded)
+    {
+        <form style="display:inline;" method="post">
+            <input type="hidden" name="id" value="@Model.Character.CharacterID" />
+            <input type="hidden" name="status" value="@CharacterStatus.Rejected" />
+            <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+        </form>
+    }
+}
+
+<div class="pt-1">
+    @if ((await AuthorizationService.AuthorizeAsync(
+        User, Model.Character,
+        ModelsOperations.Update)).Succeeded)
+    {
+        <a class="btn btn-xs btn-dark" asp-page="./Edit" asp-route-id="@Model.Character.CharacterID">Edit</a>
+
+    }
+    @if ((await AuthorizationService.AuthorizeAsync(
+    User, Model.Character,
+    ModelsOperations.Delete)).Succeeded)
+    {
+        <a class="btn btn-xs btn-danger" asp-page="./Delete" asp-route-id="@Model.Character.CharacterID">Delete</a>
+    }
+</div>

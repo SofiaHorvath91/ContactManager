@@ -1,0 +1,126 @@
+﻿@page
+@model ContactManager.Pages.Favourites.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Top Favourites</h1>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-center"><h3>TOP UNIVERSE</h3></th>
+            <th class="text-center"><h3>TOP TEAM</h3></th>
+            <th class="text-center"><h3>TOP CHARACTER</h3></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>
+                @if (Model.FavUniverse != null)
+                {
+                    <a asp-page="/Universes/Details" asp-route-id="@Model.FavUniverse.UniverseID">
+                        <img class="details-profilepic big-fav-icon" src="data:image;base64,@System.Convert.ToBase64String(Model.FavUniverse.ProfileImage)">
+                    </a>
+                }
+                else
+                {
+                    <p class="main-text">No favourite universe yet..be the first to add one!</p>
+                }
+            </th>
+            <th>
+                @if (Model.FavTeam != null)
+                {
+                    <a asp-page="/Teams/Details" asp-route-id="@Model.FavTeam.TeamID">
+                        <img class="details-profilepic big-fav-icon" src="data:image;base64,@System.Convert.ToBase64String(Model.FavTeam.ProfileImage)">
+                    </a>
+                }
+                else
+                {
+                    <p class="main-text">No favourite team yet..be the first to add one!</p>
+                }
+            </th>
+            <th>
+                @if (Model.FavCharacter != null)
+                {
+                    <a asp-page="/Characters/Details" asp-route-id="@Model.FavCharacter.CharacterID">
+                        <img class="details-profilepic big-fav-icon" src="data:image;base64,@System.Convert.ToBase64String(Model.FavCharacter.ProfileImage)">
+                    </a>
+                }
+                else
+                {
+                    <p class="main-text">No favourite character yet..be the first to add one!</p>
+                }
+            </th>
+        </tr>
+    </tbody>
+</table>
+<hr />
+<div class="text-center">
+    <h1 class="display-4">Your Favourites</h1>
+</div>
+<hr />
+<div class="text-center">
+    <h3>YOUR FAVOURITE FANDOMS</h3>
+</div>
+<div class="row">
+    <div class="row image-container">
+        @if(Model.UserFavouriteUniverses.Count == 0)
+        {
+            <p class="main-text">You don't have any favourite fandoms yet</p>
+        }
+        else
+        {
+            @foreach (var item in Model.UserFavouriteUniverses)
+            {
+                <a asp-page="/Universes/Details" asp-route-id="@item.UniverseID">
+                    <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.ProfileImage)">
+                </a>
+            }
+        }
+    </div>
+</div>
+<hr />
+<div class="text-center">
+    <h3>YOUR FAVOURITE TEAMS</h3>
+</div>
+<div class="row">
+    <div class="row image-container">
+        @if (Model.UserFavouriteTeams.Count == 0)
+        {
+            <p class="main-text">You don't have any favourite teams yet</p>
+        }
+        else
+        {
+            @foreach (var item in Model.UserFavouriteTeams)
+            {
+                <a asp-page="/Teams/Details" asp-route-id="@item.TeamID">
+                    <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.ProfileImage)">
+                </a>
+            }
+        }
+    </div>
+</div>
+<hr />
+<div class="text-center">
+    <h3>YOUR FAVOURITE CHARACTERS</h3>
+</div>
+<div class="row">
+    <div class="row image-container">
+        @if (Model.UserFavouriteCharacters.Count == 0)
+        {
+            <p class="main-text">You don't have any favourite characters yet</p>
+        }
+        else
+        {
+            @foreach (var item in Model.UserFavouriteCharacters)
+            {
+                <a asp-page="/Characters/Details" asp-route-id="@item.CharacterID">
+                    <img class="index-profilepic" src="data:image;base64,@System.Convert.ToBase64String(item.ProfileImage)">
+                </a>
+            }
+        }
+    </div>
+</div>

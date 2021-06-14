@@ -1,0 +1,158 @@
+@page
+@model ContactManager.Pages.Characters.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Character</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form enctype="multipart/form-data" method="post">
+            <dl>
+                <dt>
+                    <label>Profile Image (Image size max. 50MB!)</label>
+                </dt>
+                <dd>
+                    <input asp-for="FileUpload" type="file">
+                </dd>
+            </dl>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Character.CharacterID" />
+            <div class="form-group">
+                <label asp-for="Character.RealName" class="control-label"></label>
+                <input asp-for="Character.RealName" class="form-control" />
+                <span asp-validation-for="Character.RealName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Character.Alias" class="control-label"></label>
+                <input asp-for="Character.Alias" class="form-control" />
+                <span asp-validation-for="Character.Alias" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Character.Introduction" class="control-label"></label>
+                <textarea asp-for="Character.Introduction" class="form-control" rows="10" cols="30"></textarea>
+                <span asp-validation-for="Character.Introduction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Character.Moral" class="control-label"></label>
+                <select asp-for="Character.Moral" class="form-control" asp-items="Html.GetEnumSelectList<Moral>()">
+                    <option value="">-- Select Moral --</option>
+                </select>
+                <span asp-validation-for="Character.Moral" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Character.Kind" class="control-label"></label>
+                <select asp-for="Character.Kind" class="form-control" asp-items="Html.GetEnumSelectList<Kind>()">
+                    <option value="">-- Select Kind --</option>
+                </select>
+                <span asp-validation-for="Character.Kind" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Universe(s)</label>
+                <div class="col-md-offset-2 col-md-10">
+                    <table>
+                        <tr>
+                            @{
+                                List<ExistingUniversesData> universes = Model.ExistingUniversesList;
+                                List<ExistingTeamsData> teams = Model.ExistingTeamsList;
+
+                                foreach (var universe in universes)
+                                {
+
+                                @:</tr><tr>
+                                    @:<td>
+                                        <input type="checkbox"
+                                               id="@universe.UniverseName _checkBox"
+                                               name="selectedUniverses"
+                                               class="selectedUniversesCB"
+                                               value="@universe.UniverseID"
+                                               @(Html.Raw(universe.Existing ? "checked=\"checked\"" : "")) />
+                                        @universe.UniverseName
+                                        if (universe.Teams.ToList().Count > 0)
+                                        {
+                                            @:<div id="@universe.UniverseName _div" class="form-group hidden">
+                                                <label class="control-label">Team(s)</label><br />
+                                                var list = universe.Teams.ToList();
+                                                foreach (var team in teams)
+                                                {
+                                                    if (universe.Teams.Contains(team.TeamName))
+                                                    {
+                                                        <input type="checkbox"
+                                                               id="@team.TeamName _checkBox"
+                                                               name="selectedTeams"
+                                                               class="selectedTeamsCB"
+                                                               value="@team.TeamID"
+                                                               @(Html.Raw(team.Existing ? "checked=\"checked\"" : "")) />
+                                                        @team.TeamName<br />
+
+                                                        <select id="@team.TeamName _selectRole" name="selectedTeamRole" class="form-control"
+                                                                asp-items="@team.Roles" disabled>
+                                                            <option value="">@(Html.Raw(team.Role != null ? team.Role : "-- Select Team Role --"))</option>
+                                                        </select>
+                                                    }
+                                                }
+                                            @:</div>
+                                        }
+                                    @:</td>
+                                }
+                            @:</tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Power(s)</label>
+                    <div class="col-md-offset-2 col-md-10">
+                        <table>
+                            <tr>
+                                @{
+                                    List<ExistingPowersData> powers = Model.ExistingPowersList;
+
+                                    foreach (var power in powers)
+                                    {
+
+                                    @:</tr><tr>
+                                        @:<td>
+                                            <input type="checkbox"
+                                                   id="@power.PowerName _checkBox"
+                                                   name="selectedPowers"
+                                                   class="selectedPowersCB"
+                                                   value="@power.PowerID"
+                                                   @(Html.Raw(power.Existing ? "checked=\"checked\"" : "")) />
+                                            @power.PowerName
+                                            <div id="@power.PowerName _div" class="form-group hidden">
+                                                <br />
+                                                <input class="form-control"
+                                                       type="text"
+                                                       name="selectedPowersSpecifications"
+                                                       value="@power.PowerDescription" />
+                                                <br />
+                                                <select name="selectedPowersLevel" class="form-control" asp-items="@power.Levels">
+                                                    <option value="">@power.Level</option>
+                                                </select>
+                                            </div>
+                                        @:</td>
+                                    }
+                                @:</tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+</div>
+
+<div class="pt-1">
+    <a class="btn btn-xs btn-dark" asp-page="/Characters/Details" asp-route-id="@Model.Character.CharacterID">Back to Character</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
